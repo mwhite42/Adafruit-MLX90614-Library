@@ -1,4 +1,5 @@
-This is a library for the MLX90614 temperature sensor
+This is a Spark Core (spark.io) port of the Adafruit library for the MLX90614 temperature sensor
+---
 
   Designed specifically to work with the MLX90614 sensors in the
   adafruit shop

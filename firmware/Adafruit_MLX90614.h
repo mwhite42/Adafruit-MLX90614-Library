@@ -16,13 +16,16 @@
  ****************************************************/
 
 
-#if (ARDUINO >= 100)
- #include "Arduino.h"
+#if defined(SPARK)
+ #include "application.h"
 #else
- #include "WProgram.h"
+ #if (ARDUINO >= 100)
+  #include "Arduino.h"
+ #else
+  #include "WProgram.h"
+ #endif
+ #include "Wire.h"
 #endif
-#include "Wire.h"
-
 
 #define MLX90614_I2CADDR 0x5A
 

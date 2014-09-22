@@ -1,0 +1,7 @@
+{
+  "name": "Adafruit_MLX90614",
+  "author": "Adafruit and @jspiro",
+  "license": "BSD",
+  "version": "0.0.1",
+  "description": "This is a Spark Core port of the Adafruit library for the MLX90614 Temp Sensor"
+}
