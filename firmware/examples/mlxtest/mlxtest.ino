@@ -1,4 +1,4 @@
-/*************************************************** 
+/***************************************************
   This is a library example for the MLX90614 Temp Sensor
 
   Designed specifically to work with the MLX90614 sensors in the
@@ -6,39 +6,50 @@
   ----> https://www.adafruit.com/products/1748
   ----> https://www.adafruit.com/products/1749
 
-  These sensors use I2C to communicate, 2 pins are required to  
+  These sensors use I2C to communicate, 2 pins are required to
   interface
-  Adafruit invests time and resources providing this open source code, 
-  please support Adafruit and open-source hardware by purchasing 
+  Adafruit invests time and resources providing this open source code,
+  please support Adafruit and open-source hardware by purchasing
   products from Adafruit!
 
-  Written by Limor Fried/Ladyada for Adafruit Industries.  
+  Written by Limor Fried/Ladyada for Adafruit Industries.
   BSD license, all text above must be included in any redistribution
  ****************************************************/
- 
-#if defined(SPARK)
- #include "Adafruit_MPL3115A2.h"
-#else
- #include <Wire.h>
- #include <Adafruit_MLX90614.h>
-#endif
 
-Adafruit_MLX90614 mlx = Adafruit_MLX90614();
+#include <Adafruit_MLX90614.h>
 
-void setup() {
-  Serial.begin(9600);
 
-  Serial.println("Adafruit MLX90614 test");  
+ Adafruit_MLX90614 mlx = Adafruit_MLX90614();
+ Adafruit_MLX90614 base = Adafruit_MLX90614();
 
-  mlx.begin();  
-}
+char publishString[80];
 
-void loop() {
-  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
-  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
-  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempF()); 
-  Serial.print("*F\tObject = "); Serial.print(mlx.readObjectTempF()); Serial.println("*F");
+ void setup() {
+   Serial.begin(9600);
 
-  Serial.println();
-  delay(500);
-}
+   Serial.println("Still Temp Monitor Test");
+
+   mlx.begin(0x55);
+  base.begin(0x5A);
+
+ }
+
+ void loop() {
+
+//  Serial.println("Ambient = ");
+//  Serial.print(mlx.readAmbientTempC());
+  // Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
+  // Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempF());
+  // Serial.print("*F\tObject = "); Serial.print(mlx.readObjectTempF()); Serial.println("*F");
+    ////
+//    Serial.print("-");
+//    Serial.print(base.readAmbientTempF());
+  //  Serial.print("-");
+   sprintf(publishString, "Ambient %f | %f   Object %f | %f", mlx.readAmbientTempF(), base.readAmbientTempF(), mlx.readObjectTempF(), base.readObjectTempF());
+//   sprintf(publishString, "Ambient %f    Object  %f", mlx.readAmbientTempF(),mlx.readObjectTempF());
+
+   Serial.println(publishString);
+   Spark.publish("temperature", publishString);
+
+   delay(5000);
+ }
